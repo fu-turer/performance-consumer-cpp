@@ -18,16 +18,24 @@
  */
 
 #include <iostream>
-#include "pulsar.cpp"
 
-int main() {
-    std::cout << "performance consumer start" << std::endl;
-    char *consumeType = getenv("CONSUME_TYPE");
-    if (consumeType == nullptr) {
-        std::cout << "consume type is not config" << std::endl;
-    } else if (strcmp(consumeType, "pulsar") == 0) {
-        std::cout << "consume type is pulsar" << std::endl;
-        Pulsar::start();
+using namespace std;
+
+class EnvUtil {
+public:
+    static string getEnv(const char *name, string defaultValue) {
+        char *value = getenv(name);
+        if (value == nullptr) {
+            return defaultValue;
+        }
+        return {value};
     }
-    return 0;
-}
+
+    static int getEnv(const char *name, int defaultValue) {
+        char *aux = getenv(name);
+        if (aux == nullptr) {
+            return defaultValue;
+        }
+        return atoi(aux);
+    }
+};
